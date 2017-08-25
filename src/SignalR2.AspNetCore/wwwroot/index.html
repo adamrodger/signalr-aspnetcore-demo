@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SignalR2 in Asp.Net Core Demo</title>
+    
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.2.min.js"></script>
+    <script src="/signalr/hubs"></script>
+</head>
+<body>
+    <textarea id="messages"></textarea>
+    <input type="text" id="message"/>
+    <button id="send">Send</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var hub = $.connection.chatHub;
+            
+            hub.client.receiveMessage = function (message) {
+                $("#messages").append(message + "\n");
+            };
+
+            $("#send").on("click", function () {
+                var message = $("#message").val();
+
+                $.ajax({
+                    url: '../api/chat',
+                    contentType: "application/json",
+                    type: 'POST',
+                    datatype: 'json',
+                    data: JSON.stringify({ "message": message })
+                });
+
+                $("#message").val("");
+            });
+
+            $.connection.hub.start();
+        }, false);
+    </script>
+</body>
+</html>
