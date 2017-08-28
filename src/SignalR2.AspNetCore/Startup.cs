@@ -40,7 +40,7 @@ namespace SignalR2.AspNetCore
 
             app.UseStaticFiles()
                .UseDefaultFiles()
-               //.UseWebSockets()
+               .UseWebSockets()
                .UseSignalR2()
                .UseMvc();
         }
